@@ -1,0 +1,49 @@
+/* =====================================================================
+   RESPONSIVO — Descubra Matias Barbosa
+   Breakpoints: 1200 (notebook) / 992 (tablet) / 768 / 576 (mobile)
+   ===================================================================== */
+
+/* ---- Notebook (<=1200px) ---- */
+@media (max-width:1200px){
+    .hero-area .banner-title{ left:24px; }
+    .hero-area .embla__dots{ left:24px; }
+}
+
+/* ---- Tablet (<=992px) ---- */
+@media (max-width:992px){
+    .sec-oquefazer .materia-box .list-group,
+    .sec-eventos .materia-box .list-group,
+    .sec-gastronomia .materia-box .list-group{ grid-template-columns:repeat(2,1fr); }
+    .sec-ondeficar .materia-box .list-group{ grid-template-columns:repeat(2,1fr); }
+    .hero-area .banner-box-slider-item{ aspect-ratio:16/9; }
+    .hero-area .banner-title{ bottom:80px; }
+    .menu-topo{ flex-wrap:wrap; }
+    .footer .row > [class*="col-"]{ margin-bottom:8px; }
+}
+
+/* ---- Mobile grande (<=768px) ---- */
+@media (max-width:768px){
+    .header-top .text-md-end{ text-align:left !important; }
+    .gov-links{ justify-content:flex-start; padding-top:0; }
+    .section-headding{ margin-bottom:28px; }
+    .section-headding h2{ font-size:1.9rem; }
+    .hero-area .banner-title{ bottom:66px; font-size:clamp(1.7rem,8vw,2.6rem); }
+    .hero-area .banner-title::after{ padding:10px 18px; font-size:.85rem; }
+    .footer-brand{ flex-wrap:wrap; gap:14px; }
+    .footer-brand img{ height:44px; }
+    .footer-brand .divisor{ display:none; }
+    .footer-bottom{ flex-direction:column; align-items:flex-start; }
+}
+
+/* ---- Mobile (<=576px) ---- */
+@media (max-width:576px){
+    .secao{ padding:48px 0; }
+    .sec-oquefazer .materia-box .list-group,
+    .sec-ondeficar .materia-box .list-group,
+    .sec-gastronomia .materia-box .list-group,
+    .sec-eventos .materia-box .list-group{ grid-template-columns:1fr; }
+    .sec-oquefazer .materia-box-static-item.list-group-item{ min-height:280px; }
+    .acesso-rapido .container{ justify-content:flex-start; }
+    .embla{ max-width:100%; }
+    .logo img{ height:44px; }
+}

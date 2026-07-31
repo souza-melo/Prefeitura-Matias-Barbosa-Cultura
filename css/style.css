@@ -1,0 +1,609 @@
+/* =====================================================================
+   TEMPLATE "DESCUBRA MATIAS BARBOSA" — Portal de Turismo · PortalFacil
+   Estrutura inspirada em descubrajuizdefora.com
+   Identidade visual da Prefeitura de Matias Barbosa/MG
+   ---------------------------------------------------------------------
+   REGRA DE OURO: todo seletor que mira um box corresponde a uma classe
+   REAL renderizada pelo componente (ver references/box-catalog.md).
+   ===================================================================== */
+
+:root {
+    /* ---- PALETA INSTITUCIONAL OFICIAL (extraída de prefeitura-matias-barbosa.vercel.app) ---- */
+    --azul:      #1657A0;
+    --azul-esc:  #0E3D74;
+    --azul-clr:  #EAF1F9;
+    --verde:     #2AA02A;
+    --verde-esc: #1E7A1E;
+    --amarelo:   #F7B500;
+    --vermelho:  #E1251B;
+
+    /* ---- Ponte de tokens: nomes usados no template apontam para a paleta oficial ----
+       (mantém a regra .header-top { background: var(--cor-primaria-escura) ... } funcionando) */
+    --cor-primaria:        var(--azul);
+    --cor-primaria-escura: var(--azul-esc);
+    --cor-secundaria:      var(--verde);
+    --cor-destaque:        var(--vermelho);
+    --cor-destaque-2:      var(--amarelo);
+
+    /* ---- Pictogramas institucionais (grade 2x2 · 300x375) ---- */
+    --pict1: url("https://prefeitura-matias-barbosa.vercel.app/images/pictograma1.webp");
+    --pict2: url("https://prefeitura-matias-barbosa.vercel.app/images/pictograma2.webp");
+
+    /* ---- Texto ---- */
+    --cor-texto-base:      #434b55;
+    --cor-texto-titulos:   #14161c;   /* quase-preto editorial */
+    --cor-texto-meta:      #7b8493;
+    --cor-texto-claro:     #ffffff;
+
+    /* ---- Fundos / bordas ---- */
+    --cor-fundo-geral:     #ffffff;
+    --cor-fundo-secao:     #F6F2EA;   /* off-white quente (acolhedor) */
+    --cor-fundo-escuro:    #10203c;   /* seção de eventos (escura) */
+    --cor-fundo-escuro-2:  #17294a;   /* card sobre fundo escuro */
+    --cor-borda-geral:     #ece6da;
+
+    /* ---- Tipografia ---- */
+    --fonte-display:            'Fraunces', Georgia, 'Times New Roman', serif;
+    --fonte-familia-principal:  'Plus Jakarta Sans', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    --tamanho-fonte-base:       16px;
+    --peso-fonte-bold:          700;
+
+    /* ---- Efeitos ---- */
+    --transicao-padrao: all .35s cubic-bezier(.2,.7,.2,1);
+    --sombra-card:      0 12px 34px rgba(18,32,60,.10);
+    --sombra-card-hover:0 26px 60px rgba(18,32,60,.18);
+    --raio-borda-padrao: 16px;
+    --raio-pill: 999px 999px 999px 0;
+}
+
+*{ box-sizing:border-box; }
+
+html, body{
+    margin:0;
+    font-family:var(--fonte-familia-principal);
+    font-size:var(--tamanho-fonte-base);
+    color:var(--cor-texto-base);
+    background-color:var(--cor-fundo-geral); /* evita faixa clara do wrapper */
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+}
+
+a{ text-decoration:none; color:inherit; }
+img{ max-width:100%; }
+h1,h2,h3,h4{ font-family:var(--fonte-display); color:var(--cor-texto-titulos); margin:0; line-height:1.08; letter-spacing:-.01em; }
+
+/* Foco visível global (WCAG 2.2 – 2.4.7 / 2.4.11) */
+:where(a,button,input,[tabindex]):focus-visible{
+    outline:3px solid var(--cor-destaque-2);
+    outline-offset:3px;
+    border-radius:6px;
+}
+
+.container{ max-width:1240px; }
+
+/* =====================================================================
+   HEADER (HTML escrito à mão)
+   ===================================================================== */
+.header{ position:relative; z-index:20; }
+
+/* Faixa superior: acessibilidade + links de governo + redes */
+.header-top{ background:var(--cor-primaria-escura) url("https://prefeitura-matias-barbosa.vercel.app/images/bg-top.webp") no-repeat; color:#dfe6f4; font-size:.82rem; }
+.header-top a{ color:#dfe6f4; }
+.header-top a:hover{ color:#fff; }
+.acessibilidade{ list-style:none; display:flex; flex-wrap:wrap; gap:6px 16px; margin:0; padding:9px 0; }
+.acessibilidade a{ display:inline-flex; align-items:center; gap:.35em; padding:2px 0; }
+.acessibilidade span{ display:inline-grid; place-items:center; width:16px; height:16px; border-radius:4px; background:rgba(255,255,255,.16); font-size:.66rem; }
+.gov-links{ list-style:none; display:flex; flex-wrap:wrap; gap:6px 18px; justify-content:flex-end; align-items:center; margin:0; padding:9px 0; }
+.gov-links a{ font-weight:600; display:inline-flex; align-items:center; gap:.4em; }
+.gov-links .dot{ width:6px; height:6px; border-radius:50%; background:var(--cor-destaque-2); }
+.top-social{ display:inline-flex; }
+.top-social ul{ list-style:none; display:flex; gap:8px; margin:0 0 0 6px; padding:0; }
+.top-social a{ width:26px; height:26px; border-radius:50%; display:grid; place-items:center; background:rgba(255,255,255,.12); }
+.top-social a:hover{ background:var(--cor-destaque); color:#fff; }
+
+/* Faixa do logo + menu + busca */
+.header-bottom{ padding:16px 0; background:var(--cor-fundo-geral); box-shadow:0 1px 0 var(--cor-borda-geral); }
+.header.is-sticky .header-bottom{ position:sticky; top:0; z-index:30; box-shadow:0 8px 30px rgba(18,32,60,.10); }
+.logo img{ display:block; height:52px; width:auto; }
+.menu-topo{ display:flex; align-items:center; justify-content:flex-end; gap:16px; }
+        /* ---- Faixa institucional 4 cores ---- */
+        .faixa4{display:flex;height:6px}
+        .faixa4 span{flex:1}
+        .faixa4 .c1{background:var(--azul)}
+        .faixa4 .c2{background:var(--verde)}
+        .faixa4 .c3{background:var(--amarelo)}
+        .faixa4 .c4{background:var(--vermelho)}
+
+/* =====================================================================
+   BOX: MenuPortal   (nav#menunavegacao > ul.navbar-nav > li.nav-item > a.nav-link)
+   ===================================================================== */
+#menunavegacao{ padding:0; }
+#menunavegacao .navbar-nav{ gap:2px; flex-wrap:wrap; }
+#menunavegacao .nav-link{
+    color:var(--cor-texto-titulos); font-weight:600; font-size:.96rem;
+    padding:10px 14px; border-radius:var(--raio-pill); position:relative; transition:var(--transicao-padrao);
+}
+#menunavegacao .nav-link:hover,
+#menunavegacao .nav-item.dropdown:hover > .nav-link{ color:var(--cor-primaria); background:rgba(18,62,140,.07); }
+#menunavegacao .dropdown-menu{ border:0; border-radius:12px; box-shadow:var(--sombra-card); padding:8px; }
+#menunavegacao .dropdown-item{ border-radius:8px; padding:9px 12px; font-weight:500; }
+#menunavegacao .dropdown-item:hover{ background:var(--cor-fundo-secao); color:var(--cor-primaria); }
+#menunavegacao .navbar-toggler{ border:0; padding:6px 10px; }
+#menunavegacao .navbar-toggler i.bi-list{ font-size:1.8rem; color:var(--cor-primaria); }
+
+/* =====================================================================
+   BOX: BuscaAvancadaBox
+   ===================================================================== */
+.busca-avancada-box form{ display:flex; align-items:stretch; }
+.busca-avancada-box #busca-avancada-box-input{
+    border:1.5px solid var(--cor-borda-geral); border-right:0;
+    border-radius:var(--raio-pill) 0 0 var(--raio-pill); padding:9px 16px; min-width:180px;
+    font-family:inherit; font-size:.9rem; outline:none; background:var(--cor-fundo-geral);
+}
+.busca-avancada-box #busca-avancada-box-input:focus{ border-color:var(--cor-primaria); }
+.busca-avancada-box #busca-avancada-box-button{
+    border:0; background:var(--cor-primaria); color:#fff;
+    border-radius:0 var(--raio-pill) var(--raio-pill) 0; padding:0 18px; cursor:pointer; transition:var(--transicao-padrao);
+}
+.busca-avancada-box #busca-avancada-box-button:hover{ background:var(--cor-primaria-escura); }
+
+/* =====================================================================
+   HERO — BOX: BannerBox (slider) — atrativo em destaque
+   ===================================================================== */
+.hero-area{ position:relative; }
+.hero-area .banner-box{ height:auto !important; width:100%; }
+.hero-area .banner-box-slider .embla{ max-width:none; background:transparent; padding:0; margin:0; position:relative; }
+.hero-area .banner-box-slider-item{ position:relative; width:100%; aspect-ratio:16/7; max-height:640px; overflow:hidden; }
+.hero-area .banner-box-slider-item > a{ position:absolute; inset:0; display:block; }
+.hero-area .banner-img{ width:100% !important; height:100% !important; object-fit:cover !important; border-radius:0; }
+/* Véu + gradiente para leitura do título */
+.hero-area .banner-box-slider-item::after{
+    content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:linear-gradient(90deg, rgba(9,17,34,.78) 0%, rgba(9,17,34,.35) 45%, rgba(9,17,34,0) 75%),
+              linear-gradient(0deg, rgba(9,17,34,.55), rgba(9,17,34,0) 55%);
+}
+.hero-area .banner-title{
+    position:absolute; left:max(24px, calc(50vw - 620px + 40px)); bottom:96px; z-index:2; margin:0; max-width:min(620px, 74vw);
+    color:#fff; font-family:var(--fonte-display); font-weight:600; font-size:clamp(2rem,5.2vw,4.4rem);
+    line-height:1.02; letter-spacing:-.02em; text-shadow:0 4px 30px rgba(0,0,0,.4);
+}
+.hero-area .banner-title::before{
+    content:"Em destaque"; display:block; font-family:var(--fonte-familia-principal); font-weight:700;
+    font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--cor-destaque-2);
+    margin-bottom:16px; text-shadow:none;
+}
+.hero-area .banner-title::after{
+    content:"Saiba mais \2192"; display:inline-flex; align-items:center; margin-top:22px;
+    font-family:var(--fonte-familia-principal); font-weight:700; font-size:.9rem; letter-spacing:.02em;
+    color:#fff; background:var(--cor-destaque); padding:12px 22px; border-radius:var(--raio-pill);
+    box-shadow:0 12px 30px rgba(216,35,42,.4); text-shadow:none; transition:var(--transicao-padrao);
+}
+.hero-area .banner-box-slider-item:hover .banner-title::after{ background:#b71c22; transform:translateX(3px); }
+.hero-area .banner-date{ display:none; }
+
+/* =====================================================================
+   Slider / Embla — dots em "pílula" (compartilhado)
+   ===================================================================== */
+.materia-box .embla, .banner-box-slider .embla, .youtube-box-slider .embla{ max-width:none; background:transparent; padding:0; }
+.embla__container{ margin-left:0; }
+.embla__slide{ padding-left:0; min-width:100%; }
+.embla__dots{ gap:10px; margin-top:0; }
+.embla__dot{ width:9px; height:9px; border-radius:50%; background:var(--cor-texto-meta); opacity:.55; margin:0; }
+.embla__dot::after{ display:none; }
+.embla__dot.is-selected{ width:34px; height:8px; border-radius:10px; background:var(--cor-primaria); opacity:1; }
+.embla__dot.is-selected::after{ display:none; }
+.embla__button{ fill:#fff; }
+/* Pager sobre a imagem do hero (branco, à esquerda) */
+.hero-area .embla__dots{ position:absolute; left:max(24px, calc(50vw - 620px + 40px)); bottom:48px; z-index:3; margin:0; }
+.hero-area .embla__dot{ background:rgba(255,255,255,.55); }
+.hero-area .embla__dot.is-selected{ background:#fff; }
+
+/* =====================================================================
+   ACESSO RÁPIDO (HTML fixo) — preserva navegação familiar do cidadão
+   ===================================================================== */
+.acesso-rapido{ background:var(--cor-fundo-geral); border-bottom:1px solid var(--cor-borda-geral); }
+.acesso-rapido .container{ display:flex; flex-wrap:wrap; gap:10px; padding-top:18px; padding-bottom:18px; justify-content:center; }
+.chip-acesso{
+    display:inline-flex; align-items:center; gap:.5em; padding:10px 18px; border-radius:var(--raio-pill);
+    background:var(--cor-fundo-secao); color:var(--cor-texto-titulos); font-weight:600; font-size:.92rem;
+    border:1px solid var(--cor-borda-geral); transition:var(--transicao-padrao);
+}
+.chip-acesso i{ color:var(--cor-primaria); }
+.chip-acesso:hover{ transform:translateY(-2px); border-color:var(--cor-primaria); box-shadow:var(--sombra-card); }
+
+/* =====================================================================
+   SEÇÕES + CABEÇALHO NUMERADO (estilo editorial descubra JF)
+   ===================================================================== */
+.secao{ padding:clamp(56px,7vw,96px) 0; }
+.secao--warm{ background:var(--cor-fundo-secao); }
+.section-headding{ display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; margin-bottom:40px; }
+.section-headding .heading-left{ max-width:760px; }
+.sec-kicker{ display:inline-flex; align-items:center; gap:.7em; font-family:var(--fonte-familia-principal); font-weight:700; font-size:.76rem; letter-spacing:.2em; text-transform:uppercase; color:var(--cor-secundaria); margin-bottom:16px; }
+.sec-kicker .num{ font-variant-numeric:tabular-nums; color:var(--cor-texto-meta); }
+.sec-kicker .num::after{ content:""; display:inline-block; width:34px; height:2px; background:var(--cor-borda-geral); margin-left:12px; vertical-align:middle; }
+.section-headding h2{ font-size:clamp(1.9rem,4.2vw,3.2rem); font-weight:600; }
+.section-headding h2 .accent{ color:var(--cor-destaque); font-style:italic; }
+.secao--dark .section-headding h2{ color:#fff; }
+.secao--dark .section-headding h2 .accent{ color:var(--cor-destaque-2); }
+.secao--dark .sec-kicker{ color:var(--cor-destaque-2); }
+.ver-todos{
+    display:inline-flex; align-items:center; gap:.5em; padding:11px 20px; border-radius:var(--raio-pill);
+    border:1.5px solid var(--cor-borda-geral); color:var(--cor-texto-titulos); font-weight:600; font-size:.9rem;
+    white-space:nowrap; transition:var(--transicao-padrao);
+}
+.ver-todos i{ transition:var(--transicao-padrao); }
+.ver-todos:hover{ border-color:var(--cor-primaria); color:var(--cor-primaria); }
+.ver-todos:hover i{ transform:translateX(4px); }
+.secao--dark .ver-todos{ border-color:rgba(255,255,255,.28); color:#fff; }
+.secao--dark .ver-todos:hover{ border-color:#fff; color:#fff; }
+
+/* =====================================================================
+   BOX: MateriaBox — cards de matéria (o que fazer / onde ficar / comer / eventos)
+   Item real = a.materia-box-static-item.list-group-item ...
+   ===================================================================== */
+.materia-box .list-group{ display:grid; gap:24px; border:0; }
+.materia-box-static-item.list-group-item{
+    border:0; border-radius:var(--raio-borda-padrao); background:var(--cor-fundo-geral);
+    box-shadow:var(--sombra-card); overflow:hidden; padding:0; transition:var(--transicao-padrao);
+}
+.materia-box-static-item.list-group-item:hover{ transform:translateY(-6px); box-shadow:var(--sombra-card-hover); }
+.materia-box-static-image{ margin:0; overflow:hidden; aspect-ratio:4/3; width:100%; }
+.materia-box-static-image img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s cubic-bezier(.2,.7,.2,1); }
+.materia-box-static-item:hover .materia-box-static-image img{ transform:scale(1.06); }
+.materia-box-static-title{ margin:0; padding:18px 18px 0; }
+.materia-box-static-title h4{ font-family:var(--fonte-display); font-size:1.2rem; font-weight:600; line-height:1.2; color:var(--cor-texto-titulos); }
+.materia-box-headline{ padding:8px 18px 0; margin:0; color:var(--cor-texto-base); font-size:.92rem; }
+.materia-box-static-caption{ padding:14px 18px 20px; }
+.materia-box-static-caption .data{ color:var(--cor-texto-meta); font-size:.82rem; font-weight:600; display:inline-flex; align-items:center; gap:.4em; }
+.materia-box-static-caption .icon-data{ color:var(--cor-primaria); }
+.sem_conteudo{ padding:40px; text-align:center; color:var(--cor-texto-meta); }
+.sem_conteudo h1{ font-size:1rem; font-family:var(--fonte-familia-principal); font-weight:600; }
+
+/* Botão "veja mais" do box */
+.bt-vejamais, .vejamais-portal{
+    display:inline-flex; align-items:center; gap:.4em; margin-top:26px; padding:11px 22px; border-radius:var(--raio-pill);
+    background:var(--cor-primaria); color:#fff; font-family:var(--fonte-familia-principal); font-size:.88rem; font-weight:700; transition:var(--transicao-padrao);
+}
+.bt-vejamais:hover, .vejamais-portal:hover{ background:var(--cor-primaria-escura); color:#fff; transform:translateY(-2px); }
+
+/* ---- 01 · O QUE FAZER — cards com imagem de fundo + título sobreposto ---- */
+.sec-oquefazer .materia-box .list-group{ grid-template-columns:repeat(3,1fr); }
+.sec-oquefazer .materia-box-static-item.list-group-item{
+    position:relative; display:flex; flex-direction:column; justify-content:flex-end;
+    min-height:340px; padding:24px; color:#fff; border-radius:18px;
+}
+.sec-oquefazer .materia-box-static-image{ position:absolute; inset:0; margin:0; width:100%; height:100%; aspect-ratio:auto; z-index:0; }
+.sec-oquefazer .materia-box-static-item::after{
+    content:""; position:absolute; inset:0; z-index:1;
+    background:linear-gradient(180deg, rgba(9,17,34,.05) 30%, rgba(9,17,34,.86) 100%);
+}
+.sec-oquefazer .materia-box-static-title,
+.sec-oquefazer .materia-box-headline,
+.sec-oquefazer .materia-box-static-caption{ position:relative; z-index:2; padding:0; }
+.sec-oquefazer .materia-box-static-title{ margin-top:6px; }
+.sec-oquefazer .materia-box-static-title h4{ color:#fff; font-size:1.45rem; text-shadow:0 2px 16px rgba(0,0,0,.5); }
+.sec-oquefazer .materia-box-headline{ color:rgba(255,255,255,.85); margin-top:8px; font-size:.9rem; }
+.sec-oquefazer .materia-box-static-caption{ margin-top:12px; }
+.sec-oquefazer .materia-box-static-caption .data{ color:rgba(255,255,255,.9); }
+.sec-oquefazer .materia-box-static-caption .icon-data{ color:var(--cor-destaque-2); }
+
+/* ---- 02 · ONDE FICAR / 03 · ONDE COMER — cards imagem-topo + corpo claro ---- */
+.sec-ondeficar .materia-box .list-group{ grid-template-columns:repeat(4,1fr); }
+.sec-gastronomia .materia-box .list-group{ grid-template-columns:repeat(3,1fr); }
+
+/* ---- 04 · EVENTOS — seção escura, card com badge de data ---- */
+.secao--dark{ background:var(--cor-fundo-escuro); color:#fff; }
+.sec-eventos .materia-box .list-group{ grid-template-columns:repeat(3,1fr); }
+.sec-eventos .materia-box-static-item.list-group-item{ position:relative; background:var(--cor-fundo-escuro-2); box-shadow:0 18px 40px rgba(0,0,0,.35); }
+.sec-eventos .materia-box-static-image{ aspect-ratio:16/10; }
+.sec-eventos .materia-box-static-caption{ position:absolute; top:0; left:0; padding:14px; z-index:3; }
+.sec-eventos .materia-box-static-caption .data{
+    background:var(--cor-destaque-2); color:#10203c; padding:7px 12px; border-radius:10px; font-size:.8rem; font-weight:800; box-shadow:0 6px 16px rgba(0,0,0,.3);
+}
+.sec-eventos .materia-box-static-caption .icon-data{ color:#10203c; }
+.sec-eventos .materia-box-static-title{ padding:16px 18px 20px; }
+.sec-eventos .materia-box-static-title h4{ color:#fff; font-size:1.15rem; }
+
+/* =====================================================================
+   FOOTER (HTML escrito à mão) — estilo Secretaria de Turismo
+   ===================================================================== */
+.footer{ background:var(--cor-primaria-escura); color:#c3cde3; padding:64px 0 0; }
+.footer a{ color:#c3cde3; transition:var(--transicao-padrao); }
+.footer a:hover{ color:#fff; }
+.footer-brand{ display:flex; align-items:center; gap:16px; margin-bottom:20px; }
+.footer-brand img{ height:52px; width:auto; }
+.footer-brand .divisor{ width:1px; height:44px; background:rgba(255,255,255,.2); }
+.footer-sobre p{ font-size:.9rem; line-height:1.7; max-width:34ch; color:#a9b6d4; }
+.footer h5{ font-family:var(--fonte-familia-principal); color:#fff; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; margin:0 0 16px; }
+.footer-col ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:11px; }
+.footer-col ul a{ font-size:.92rem; }
+.footer-col ul a:hover{ padding-left:5px; }
+.footer-contato{ display:flex; flex-direction:column; gap:14px; }
+.footer-contato .item{ display:flex; gap:12px; align-items:flex-start; font-size:.9rem; }
+.footer-contato .item i{ color:var(--cor-destaque-2); margin-top:3px; }
+.footer-socials{ display:flex; gap:10px; margin-top:8px; }
+.footer-socials a{ width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,.10); display:grid; place-items:center; }
+.footer-socials a:hover{ background:var(--cor-destaque); color:#fff; transform:translateY(-3px); }
+.selo-cadastur{ display:inline-flex; align-items:center; gap:10px; margin-top:18px; padding:10px 16px; border:1px solid rgba(255,255,255,.18); border-radius:12px; font-size:.8rem; color:#a9b6d4; }
+.selo-cadastur i{ font-size:1.4rem; color:var(--cor-secundaria); }
+.footer-bottom{ border-top:1px solid rgba(255,255,255,.12); margin-top:52px; padding:22px 0; display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
+.footer-bottom p{ margin:0; font-size:.82rem; color:#8f9dbd; }
+.footer-bottom .legais{ display:flex; gap:20px; flex-wrap:wrap; }
+.footer-bottom .legais a{ font-size:.82rem; }
+
+/* =====================================================================
+   Voltar ao topo + reveal + reduced motion
+   ===================================================================== */
+.scroll-area{
+    position:fixed; right:22px; bottom:22px; z-index:60; width:48px; height:48px;
+    display:flex; align-items:center; justify-content:center; background:var(--cor-primaria);
+    color:#fff; border-radius:50%; box-shadow:var(--sombra-card-hover);
+}
+.scroll-area:hover{ background:var(--cor-primaria-escura); }
+
+.reveal{ opacity:0; transform:translateY(28px); transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+.reveal.is-visible{ opacity:1; transform:none; }
+
+@media (prefers-reduced-motion:reduce){
+    *{ animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+    .reveal{ opacity:1; transform:none; }
+}
+
+/* =====================================================================
+   Elementos globais do portal (cookies) — sempre estilizar
+   ===================================================================== */
+.btn-gerenciar-cookies{
+    position:fixed; left:18px; bottom:18px; z-index:1200; visibility:visible !important;
+    display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:var(--raio-pill);
+    background:var(--cor-primaria); color:#fff; font-size:13px; font-weight:600; line-height:1;
+    border:1px solid rgba(255,255,255,.15); box-shadow:0 8px 24px rgba(0,0,0,.25); cursor:pointer; transition:var(--transicao-padrao);
+}
+.btn-gerenciar-cookies:hover{ filter:brightness(1.08); transform:translateY(-2px); }
+.btn-gerenciar-cookies svg{ width:18px; height:18px; fill:currentColor; flex-shrink:0; margin:0 !important; }
+
+#cookieConsent{ position:fixed; left:0; right:0; bottom:0; z-index:1300; background:#fff; border-top:3px solid var(--cor-primaria); box-shadow:0 -10px 36px rgba(18,32,60,.18); padding:20px 0; }
+#cookieConsent .container{ max-width:1180px; margin:0 auto; padding:0 24px; display:flex; flex-wrap:wrap; align-items:center; gap:14px 28px; }
+#cookieConsent h4{ flex:1 1 100%; margin:0; font-family:var(--fonte-familia-principal); font-size:1.05rem; font-weight:800; color:var(--cor-texto-titulos); }
+#cookieConsent p{ flex:1 1 420px; margin:0; font-size:13.5px; line-height:1.6; color:var(--cor-texto-base); }
+#cookieConsent a{ color:var(--cor-primaria); font-weight:600; text-decoration:underline; }
+#cookieConsent .d-flex{ flex:0 0 auto; margin-left:auto; gap:12px; flex-wrap:wrap; margin-top:0 !important; }
+#cookieConsent .btn{ display:inline-flex; align-items:center; gap:7px; padding:11px 22px; border-radius:var(--raio-borda-padrao); font-size:14px; font-weight:600; border:1.5px solid var(--cor-primaria); cursor:pointer; transition:var(--transicao-padrao); }
+#cookieConsent .d-flex .btn:first-child{ background:transparent; color:var(--cor-primaria); }
+#cookieConsent .d-flex .btn:first-child:hover{ background:var(--cor-fundo-secao); }
+#cookieConsent .d-flex .btn:last-child{ background:var(--cor-primaria); color:#fff; }
+#cookieConsent .d-flex .btn:last-child:hover{ background:var(--cor-primaria-escura); }
+@media (max-width:767px){
+    #cookieConsent .d-flex{ margin-left:0; width:100%; }
+    #cookieConsent .d-flex .btn{ flex:1 1 auto; justify-content:center; }
+}
+
+/* #####################################################################
+   REFINAMENTOS — identidade institucional + pictogramas
+   (bloco aditivo: complementa o CSS existente, não o substitui)
+   ##################################################################### */
+
+/* =====================================================================
+   1. TOPO — complemento do que faltava (bg-top.webp = 585x52)
+   A regra .header-top existente é mantida; aqui só completamos.
+   ===================================================================== */
+.header-top{ min-height:52px; }
+.header-top .row{ min-height:52px; align-items:center; }
+/* Conteúdo do topo alinhado à direita, liberando a faixa de pictogramas à esquerda */
+.header-top .topo-conteudo{
+    display:flex; align-items:center; justify-content:flex-end; gap:18px; flex-wrap:wrap; margin-left:auto;
+}
+.header-top .acessibilidade{ padding:0; }
+.header-top .top-social ul{ margin:0; }
+
+/* Logo institucional oficial (.brand-logo, mesma regra do site aprovado).
+   Escopado em .logo .brand-logo para vencer a regra `.logo img{height:52px}`. */
+.logo .brand-logo{
+    height:85px; width:auto; max-width:100%; display:block;
+    margin-top:8px; margin-bottom:8px;
+}
+
+/* =====================================================================
+   2. SISTEMA DE PICTOGRAMAS — sprite da grade 2x2 (300x375 · tile 150x187.5)
+   Extrai cada quadrante sem gerar arquivo novo.
+   ===================================================================== */
+.pict{
+    display:inline-block; flex:none;
+    background-repeat:no-repeat;
+    background-size:200% 200%;      /* 2 colunas x 2 linhas */
+    aspect-ratio:4/5;                /* 150 : 187.5 */
+}
+.pict--1{ background-image:var(--pict1); }  /* verde  */
+.pict--2{ background-image:var(--pict2); }  /* vermelho */
+.pict--a{ background-position:0% 0%; }      /* sup. esquerdo */
+.pict--b{ background-position:100% 0%; }    /* sup. direito  */
+.pict--c{ background-position:0% 100%; }    /* inf. esquerdo */
+.pict--d{ background-position:100% 100%; }  /* inf. direito  */
+/*  p1: a=comunidade/natureza · b=esporte · c=escadaria · d=bandeira/folia
+    p2: a=coreto/multidão · b=fachada histórica · c=igreja barroca · d=igreja neoclássica */
+
+/* =====================================================================
+   3. HERO — 1 pictograma discreto (sem mosaico, sem competir com o título)
+   ===================================================================== */
+.hero-area{ overflow:hidden; }
+.hero-area .pict-hero{
+    position:absolute; right:-40px; bottom:-30px; z-index:2;
+    width:300px; opacity:.09; pointer-events:none;
+    filter:grayscale(1) brightness(1.9);   /* preserva o traço branco do pictograma */
+}
+
+/* =====================================================================
+   4. CABEÇALHO DE SEÇÃO — refinamento tipográfico
+   (sem tile de pictograma: em opacidade baixa o tile vira mancha e
+    compete com o título. Os pictogramas ficam no Hero e no rodapé.)
+   ===================================================================== */
+.section-headding{ position:relative; }
+.sec-kicker{ margin-bottom:14px; }
+.sec-kicker .num{ font-weight:700; letter-spacing:.06em; }
+
+/* =====================================================================
+   6. CARDS — detalhe sutil dos blocos coloridos (sem prejudicar leitura)
+   ===================================================================== */
+.sec-ondeficar .materia-box-static-item.list-group-item,
+.sec-gastronomia .materia-box-static-item.list-group-item{ position:relative; }
+.sec-ondeficar .materia-box-static-item::before,
+.sec-gastronomia .materia-box-static-item::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:4px; z-index:3;
+    background:linear-gradient(90deg,
+        var(--azul) 0 25%, var(--verde) 25% 50%, var(--amarelo) 50% 75%, var(--vermelho) 75% 100%);
+    opacity:0; transition:var(--transicao-padrao);
+}
+.sec-ondeficar .materia-box-static-item:hover::before,
+.sec-gastronomia .materia-box-static-item:hover::before{ opacity:1; }
+
+/* =====================================================================
+   ACESSO RÁPIDO — chips com a linguagem visual dos pictogramas
+   Cada chip carrega um "tile" na cor institucional, com o mesmo canto
+   assimétrico dos pictogramas (3 cantos redondos + 1 reto). No hover o
+   tile arredonda/gira e o chip recebe um véu da própria cor.
+   ===================================================================== */
+.acesso-rapido .container{ gap:12px; padding-top:22px; padding-bottom:22px; }
+
+.chip-acesso{
+    --c:var(--azul);          /* cor institucional do chip */
+    --ico-fg:#fff;            /* cor do ícone dentro do tile */
+    position:relative; isolation:isolate;
+    display:inline-flex; align-items:center; gap:11px;
+    padding:8px 20px 8px 8px;
+    border-radius:var(--raio-pill);
+    background:var(--cor-fundo-geral);
+    border:1.5px solid var(--cor-borda-geral);
+    color:var(--cor-texto-titulos);
+    font-weight:600; font-size:.93rem; line-height:1;
+    box-shadow:0 2px 10px rgba(16,42,80,.05);
+    transition:transform .3s cubic-bezier(.22,.61,.36,1), box-shadow .3s, border-color .3s;
+}
+/* Véu da cor (z-index:-1 + isolation: pinta acima do fundo, abaixo do texto) */
+.chip-acesso::before{
+    content:""; position:absolute; inset:0; z-index:-1; border-radius:inherit;
+    background:var(--c); opacity:0; transition:opacity .3s;
+}
+.chip-acesso .ico{
+    width:34px; height:34px; flex:none; display:grid; place-items:center;
+    background:var(--c); color:var(--ico-fg);
+    border-radius:11px 11px 11px 3px;   /* canto assimétrico = forma do pictograma */
+    font-size:.9rem;
+    transition:border-radius .35s cubic-bezier(.22,.61,.36,1),
+               transform .35s cubic-bezier(.22,.61,.36,1);
+}
+.chip-acesso .ico i{ color:inherit; }
+
+.chip-acesso:hover{
+    transform:translateY(-3px);
+    border-color:var(--c);
+    box-shadow:0 14px 28px rgba(16,42,80,.14);
+}
+.chip-acesso:hover::before{ opacity:.06; }
+.chip-acesso:hover .ico{ border-radius:11px; transform:rotate(-5deg) scale(1.06); }
+
+/* Variantes institucionais (ordem da faixa4: azul · verde · amarelo · vermelho) */
+.chip--azul{     --c:var(--azul); }
+.chip--verde{    --c:var(--verde); }
+.chip--vermelho{ --c:var(--vermelho); }
+/* Amarelo x branco = ~1.9:1 (reprova). Ícone em azul-tinta garante o contraste. */
+.chip--amarelo{  --c:var(--amarelo); --ico-fg:#1A2A3A; }
+
+@media (prefers-reduced-motion:reduce){
+    .chip-acesso:hover{ transform:none; }
+    .chip-acesso:hover .ico{ transform:none; }
+}
+
+/* =====================================================================
+   7. RODAPÉ — padrão visual oficial + pictograma2 como elemento principal
+   (classes espelhadas do site oficial: .foot-picos/.foot-brand/.eu-amo/
+    .foot-social/.foot-list/.foot-bottom)
+   ===================================================================== */
+.foot-picos{ display:flex; height:12px; }
+.foot-picos span{ flex:1 1 0; }
+.foot-picos .c1{ background:var(--azul); }
+.foot-picos .c2{ background:var(--verde); }
+.foot-picos .c3{ background:var(--amarelo); }
+.foot-picos .c4{ background:var(--vermelho); }
+
+.footer{
+    background:var(--azul-esc); color:rgba(255,255,255,.78);
+    padding:56px 0 22px; position:relative; overflow:hidden;
+}
+/* Marca d'água institucional: pictograma2 em uma única instância, monocromática.
+   grayscale() preserva o traço branco (sem ele o tile vermelho vira mancha). */
+.footer::before{
+    content:""; position:absolute; right:-30px; bottom:0; width:460px; height:100%; z-index:0;
+    background-image:var(--pict2);
+    background-repeat:no-repeat;
+    background-position:right bottom;
+    background-size:auto 300px;
+    filter:grayscale(1) brightness(1.9);
+    opacity:.07; pointer-events:none;
+}
+.footer .container{ position:relative; z-index:1; }
+.footer h4, .footer h5{
+    color:#fff; font-family:var(--fonte-familia-principal);
+    font-size:1.05rem; font-weight:700; margin-bottom:16px; letter-spacing:0; text-transform:none;
+}
+.footer a{ color:rgba(255,255,255,.78); }
+.footer a:hover{ color:#fff; }
+.foot-list{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; font-size:.9rem; }
+.foot-brand .eu-amo{
+    display:inline-flex; align-items:center; gap:10px;
+    background:rgba(255,255,255,.08); border-radius:var(--raio-pill); padding:10px 18px;
+    font-family:var(--fonte-familia-principal); font-weight:700; color:#fff; margin-bottom:16px;
+}
+.foot-brand .eu-amo i{ color:var(--vermelho); font-size:1.1rem; }
+.foot-brand p{ font-size:.9rem; color:rgba(255,255,255,.78); max-width:34ch; }
+.foot-social{ display:flex; gap:10px; margin-top:16px; }
+.foot-social a{
+    width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,.10);
+    color:#fff; display:grid; place-items:center; transition:var(--transicao-padrao);
+}
+.foot-social a:hover{ background:var(--azul); transform:translateY(-3px); }
+.foot-bottom{
+    border-top:1px solid rgba(255,255,255,.14); margin-top:34px; padding-top:20px;
+    display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
+    font-size:.82rem; color:rgba(255,255,255,.6);
+}
+.foot-bottom p{ margin:0; }
+.foot-bottom ul{ list-style:none; display:flex; gap:16px; padding:0; margin:0; }
+
+/* =====================================================================
+   8. AJUSTES DE ESPAÇAMENTO
+   ===================================================================== */
+
+/* 8.1 Cards: quando o último elemento é o título ou a chamada, ele ficava
+   colado na base do card (as regras de padding só têm topo). */
+.sec-ondeficar .materia-box-static-item.list-group-item > *:last-child,
+.sec-gastronomia .materia-box-static-item.list-group-item > *:last-child{
+    padding-bottom:22px;
+}
+
+/* 8.2 Menu: impedir quebra de linha no desktop.
+   O MenuPortal só colapsa abaixo de 992px (navbar-expand-lg); entre 992 e
+   1200px menu + busca não cabiam e o "Roteiros" caía para a 2ª linha. */
+@media (min-width:992px){
+    .menu-topo{ flex-wrap:nowrap; }
+    #menunavegacao .navbar-nav{ flex-wrap:nowrap; }
+    #menunavegacao .nav-link{ white-space:nowrap; }
+    .busca-avancada-box{ flex:0 1 auto; min-width:0; }
+    .busca-avancada-box #busca-avancada-box-input{ min-width:0; width:100%; }
+}
+/* Um único tamanho de menu para todo o desktop (sem fronteira de max-width:
+   evita o menu "pular" de tamanho ao redimensionar). Calibrado para caber em
+   992px — a menor largura em que o MenuPortal ainda mostra o menu horizontal.
+   Escopado com id+classe (#menunavegacao.nav-primary-portal) para vencer a
+   regra base `#menunavegacao .nav-link` — técnica padrão do PortalFacil. */
+@media (min-width:992px){
+    #menunavegacao.nav-primary-portal .nav-link{ padding:9px 11px; font-size:.92rem; }
+    /* A busca nunca deve encolher a ponto de virar só o botão */
+    .busca-avancada-box{ flex:0 0 auto; min-width:180px; }
+    .busca-avancada-box #busca-avancada-box-input{ padding:8px 14px; }
+}
+
+@media (max-width:768px){
+    .hero-area .pict-hero{ width:200px; opacity:.05; }
+    .footer::before{ width:260px; background-size:auto 180px; }
+    .foot-bottom{ flex-direction:column; align-items:flex-start; }
+    .logo .brand-logo{ height:58px; margin-top:4px; margin-bottom:4px; }
+}
